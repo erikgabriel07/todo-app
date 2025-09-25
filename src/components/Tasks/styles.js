@@ -19,15 +19,19 @@ export const TaskFooter = styled.View`
   align-items: center;
 `;
 
-export const TaskStatus = styled.View`
+export const TaskStatus = styled.TouchableOpacity`
   flex-direction: row;
   align-items: center;
   gap: 8px;
 `;
 
-export const TaskAction = styled.View``;
+export const TaskAction = styled.View`
+  flex-direction: row;
+  gap: 16px;
+`;
 
 export const TaskIcon = styled.Image`
   width: 16px;
   height: 16px;
+  resize-mode: contain;
 `;
