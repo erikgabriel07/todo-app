@@ -1,9 +1,8 @@
 import { Modal } from "react-native";
 
-import { Text } from "../Text";
 import { ModalBody, Overlay } from "./styles";
 
-export default function CustomModal() {
+export default function CustomModal({ children }) {
     return (
         <Modal
             transparent
@@ -11,7 +10,7 @@ export default function CustomModal() {
         >
             <Overlay>
                 <ModalBody>
-                    <Text>Custom Modal</Text>
+                    {children}
                 </ModalBody>
             </Overlay>
         </Modal>
