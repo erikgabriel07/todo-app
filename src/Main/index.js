@@ -6,10 +6,13 @@ import { Container } from './styles';
 
 import AddTaskButton from '../components/AddTaskButton';
 import DeleteConfirmModal from '../components/DeleteConfirmModal';
+import NewTaskModal from '../components/NewTaskModal';
+
 import { tasks } from '../mocks/tasks';
 
 export default function Main() {
   const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false);
+  const [isNewTaskModalVisible, setIsNewTaskModalVisible] = useState(false);
   const [taskIdBeingDeleted, setTaskIdBeingDeleted] = useState();
 
   function handleDeleteTask(id) {
@@ -30,6 +33,11 @@ export default function Main() {
     alert(`Alterar Tarefa ${id}`);
   }
 
+  function handleCreateTask(task) {
+    alert(`{ title: ${task.title}, description: ${task.description}}`);
+    setIsNewTaskModalVisible(false);
+  }
+
   return (
     <Container>
       <Header />
@@ -41,12 +49,18 @@ export default function Main() {
         onChangeStatus={handleChangeStatus}
       />
 
-      <AddTaskButton onPress={() => alert('Abrir Formulario Cadastro')} />
+      <AddTaskButton onPress={() => setIsNewTaskModalVisible(true)} />
 
       <DeleteConfirmModal
         visible={isDeleteModalVisible}
         onClose={() => setIsDeleteModalVisible(false)}
         onConfirm={handleConfirmDeleteTask}
+      />
+
+      <NewTaskModal
+        visible={isNewTaskModalVisible}
+        onClose={() => setIsNewTaskModalVisible(false)}
+        onSave={handleCreateTask}
       />
     </Container>
   );
