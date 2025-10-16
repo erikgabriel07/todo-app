@@ -1,6 +1,6 @@
-import { Modal } from "react-native";
+import { Modal } from 'react-native';
 
-import { ModalBody, Overlay } from "./styles";
+import { ModalBody, Overlay } from './styles';
 
 export default function CustomModal({ children, visible, onClose }) {
     return (
@@ -8,7 +8,7 @@ export default function CustomModal({ children, visible, onClose }) {
             visible={visible}
             transparent
             statusBarTranslucent
-            animationType="fade"
+            animationType='fade'
             onRequestClose={onClose}
         >
             <Overlay>

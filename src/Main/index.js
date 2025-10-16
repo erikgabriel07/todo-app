@@ -1,15 +1,17 @@
-import { useState } from "react";
+import { useState } from 'react';
 
-import Header from "../components/Header";
-import { Container } from "./styles";
-import Tasks from "../components/Tasks";
+import Header from '../components/Header';
+import { Container } from './styles';
+import Tasks from '../components/Tasks';
 
 import { tasks } from '../mocks/tasks';
-import AddTaskButton from "../components/AddTaskButton";
-import DeleteConfirmModal from "../components/DeleteConfirmModal";
+import AddTaskButton from '../components/AddTaskButton';
+import DeleteConfirmModal from '../components/DeleteConfirmModal';
+import NewTaskModal from '../components/NewTaskModal';
 
 export default function Main() {
     const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false);
+    const [isNewTaskModalVisible, setIsNewTaskModalVisible] = useState(false);
     const [TaskIdBeingDeleted, setTaskIdBeingDeleted] = useState();
 
     function handleEditTask(task) {
@@ -30,6 +32,11 @@ export default function Main() {
         alert(`Alterando Status ${id}`);
     }
 
+    function handleCreateTask(task) {
+        alert(`Title: ${task.title}, description: ${task.description}`)
+        setIsNewTaskModalVisible(false);
+    }
+
     return (
         <Container>
             <Header />
@@ -41,12 +48,18 @@ export default function Main() {
                 onChangeStatus={handleChangeStatus}
             />
 
-            <AddTaskButton onPress={() => alert('Abrir Formulário Cadastro')} />
+            <AddTaskButton onPress={() => setIsNewTaskModalVisible(true)} />
             
             <DeleteConfirmModal
                 visible={isDeleteModalVisible}
                 onClose={() => setIsDeleteModalVisible(false)}
                 onConfirm={handleConfirmDeleteTask}
+            />
+
+            <NewTaskModal
+                visible={isNewTaskModalVisible}
+                onClose={() => setIsNewTaskModalVisible(false)}
+                onSave={handleCreateTask}
             />
         </Container>
     )
