@@ -1,19 +1,29 @@
 import { useState } from 'react';
+import { ActivityIndicator, Image } from 'react-native';
 
-import Header from '../components/Header';
-import Tasks from '../components/Tasks';
-import { Container } from './styles';
+import { Text } from '../components/Text';
 
 import AddTaskButton from '../components/AddTaskButton';
 import DeleteConfirmModal from '../components/DeleteConfirmModal';
+import EditalTaskModal from '../components/EditTaskModal';
+import Header from '../components/Header';
 import NewTaskModal from '../components/NewTaskModal';
+import Tasks from '../components/Tasks';
 
-import { tasks } from '../mocks/tasks';
+import { CenteredContainer, Container } from './styles';
+
+import task from '../assets/images/task.png';
+
+import { tasks as mockup } from '../mocks/tasks';
 
 export default function Main() {
+  const [tasks, setTasks] = useState(mockup);
   const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false);
   const [isNewTaskModalVisible, setIsNewTaskModalVisible] = useState(false);
+  const [isEditTaskModalVisible, setIsEditTaskModalVisible] = useState(false);
   const [taskIdBeingDeleted, setTaskIdBeingDeleted] = useState();
+  const [taskBeingEdited, setTaskBeingEdited] = useState();
+  const [isLoading, setIsLoading] = useState(false);
 
   function handleDeleteTask(id) {
     setTaskIdBeingDeleted(id);
@@ -26,7 +36,8 @@ export default function Main() {
   }
 
   function handleEditTask(task) {
-    alert(`Alterar Tarefa ${task.id}`);
+    setTaskBeingEdited(task);
+    setIsEditTaskModalVisible(true);
   }
 
   function handleChangeStatus(id) {
@@ -38,16 +49,45 @@ export default function Main() {
     setIsNewTaskModalVisible(false);
   }
 
+  function handleSaveEdit(task) {
+    alert(`{ id: ${task.id}, title: ${task.title}, description: ${task.description}}`);
+    setIsEditTaskModalVisible(false);
+  }
+
   return (
     <Container>
       <Header />
 
-      <Tasks
-        tasks={tasks}
-        onDelete={handleDeleteTask}
-        onEditTask={handleEditTask}
-        onChangeStatus={handleChangeStatus}
-      />
+      {tasks.length > 0 && !isLoading && (
+        <Tasks
+          tasks={tasks}
+          onDelete={handleDeleteTask}
+          onEditTask={handleEditTask}
+          onChangeStatus={handleChangeStatus}
+        />
+      )}
+
+      {isLoading && (
+        <CenteredContainer>
+          <ActivityIndicator size={'large'} color="#333" />
+        </CenteredContainer>
+      )}
+
+      {tasks.length === 0 && (
+        <CenteredContainer>
+          <Image source={task} style={{ width: 150, height: 150 }} />
+
+          <Text
+            weight="600"
+            size={20}
+            opacity={0.8}
+            style={{ marginTop: 16 }}
+          >
+            Sem Tarefas
+          </Text>
+          <Text opacity={0.5} style={{ marginTop: 8 }}>Não há tarefas a serem visualizadas</Text>
+        </CenteredContainer>
+      )}
 
       <AddTaskButton onPress={() => setIsNewTaskModalVisible(true)} />
 
@@ -61,6 +101,13 @@ export default function Main() {
         visible={isNewTaskModalVisible}
         onClose={() => setIsNewTaskModalVisible(false)}
         onSave={handleCreateTask}
+      />
+
+      <EditalTaskModal
+        visible={isEditTaskModalVisible}
+        onClose={() => setIsEditTaskModalVisible(false)}
+        onSave={handleSaveEdit}
+        task={taskBeingEdited}
       />
     </Container>
   );

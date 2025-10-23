@@ -8,3 +8,9 @@ export const Container = styled.SafeAreaView`
   margin-top: ${isAndroid ? `${StatusBar.currentHeight}px` : 0};
   flex: 1;
 `;
+
+export const CenteredContainer = styled.View`
+  margin-top: 64px;
+  align-items: center;
+  justify-content: center;
+`;
